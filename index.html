@@ -541,6 +541,18 @@
             else nextBtn.classList.remove('hidden-btn');
         }
 
+function requestFullscreen() {
+    const elem = document.documentElement;
+
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { // Safari
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { // Edge antiguo
+        elem.msRequestFullscreen();
+    }
+}
+
         function initSwiper() {
             swiper = new Swiper('.swiper', {
                 direction: 'horizontal',
@@ -594,22 +606,39 @@
             });
         }
 
-        function startPresentation() {
-            bgm.play().catch(() => {});
-            splash.classList.add('hidden');
-            closeBtn.style.display = 'block';
-            if (!swiper) {
-                initSwiper();
-                setupQuiz();
-            }
-        }
+ function startPresentation() {
 
-        function closePresentation() {
-            bgm.pause();
-            bgm.currentTime = 0;
-            splash.classList.remove('hidden');
-            closeBtn.style.display = 'none';
-        }
+    requestFullscreen();
+
+    bgm.play().catch(() => {});
+
+    splash.classList.add('hidden');
+
+    closeBtn.style.display = 'block';
+
+    if (!swiper) {
+        initSwiper();
+        setupQuiz();
+    }
+}
+
+   function closePresentation() {
+
+    bgm.pause();
+    bgm.currentTime = 0;
+
+    splash.classList.remove('hidden');
+
+    closeBtn.style.display = 'none';
+
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else if (document.webkitFullscreenElement) {
+        document.webkitExitFullscreen();
+    } else if (document.msFullscreenElement) {
+        document.msExitFullscreen();
+    }
+}
 
         startBtn.addEventListener('click', startPresentation);
         closeBtn.addEventListener('click', closePresentation);
