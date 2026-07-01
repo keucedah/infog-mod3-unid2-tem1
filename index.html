@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Unidad 3 · Conservación de Suelos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+    <style>
+        /* ---------- RESET + VARIABLES ---------- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --verde-principal: #2E7D32;
+            --verde-claro: #66BB6A;
+            --verde-muy-claro: #E8F5E9;
+            --marron-tierra: #8D6E63;
+            --beige: #F5F5DC;
+            --blanco: #FFFFFF;
+            --gris-oscuro: #424242;
+            --amarillo-suave: #FBC02D;
+            --font: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: var(--gris-oscuro);
+            font-family: var(--font);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ---------- CONTENEDOR PRINCIPAL ---------- */
+        .presentation-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 100%;
+            max-height: 100%;
+            background: var(--beige);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(0,0,0,0.3);
+        }
+
+        /* ---------- SPLASH ---------- */
+        .splash {
+            position: absolute;
+            inset: 0;
+            z-index: 9999;
+            background: var(--beige);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+            pointer-events: auto;
+        }
+        .splash.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .splash-button-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .splash-button-bg {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 60px;
+            object-fit: contain;
+        }
+        .splash-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0A4A2A;
+            color: var(--blanco);
+            border: none;
+            border-radius: 60px;
+            padding: 18px 48px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            cursor: pointer;
+            transition: background 0.2s;
+            animation: pulse 1.8s infinite;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+        .splash-btn:hover { background: #0D6B3E; }
+        .splash-btn img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.06); }
+        }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @media (max-width: 700px) {
+            .splash-button-wrapper { max-width: 380px; }
+            .splash-btn { 
+                font-size: 1.2rem; 
+                padding: 14px 28px; 
+                gap: 8px;
+            }
+            .splash-btn img { width: 24px; height: 24px; }
+        }
+
+        /* ---------- BOTÓN CERRAR ---------- */
+        .close-btn {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            z-index: 8000;
+            background: #0A4A2A;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        .close-btn:hover { background: #0D6B3E; }
+
+        /* ---------- BARRA DE PROGRESO ---------- */
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 6px;
+            width: 100%;
+            background: rgba(0,0,0,0.08);
+            z-index: 7000;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #0A4A2A;
+            transition: width 0.3s ease;
+        }
+
+        /* ---------- SWIPER ---------- */
+        .swiper {
+            width: 100%;
+            height: 100%;
+            background: var(--beige);
+        }
+        .swiper-slide {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 80px 50px 70px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--beige);
+            scroll-behavior: smooth;
+        }
+        .swiper-slide:nth-child(odd) { background: var(--beige); }
+        .swiper-slide:nth-child(even) { background: var(--verde-muy-claro); }
+
+        /* tipografía */
+        .swiper-slide h1 {
+            color: #0A4A2A;
+            font-size: 2.6rem;
+            border-bottom: 4px solid var(--amarillo-suave);
+            display: inline-block;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        .swiper-slide h2 {
+            color: var(--marron-tierra);
+            font-size: 2rem;
+            margin: 15px 0 10px;
+        }
+        .swiper-slide h3 {
+            color: #0A4A2A;
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+        .swiper-slide p, .swiper-slide li {
+            color: var(--gris-oscuro);
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        .swiper-slide ul, .swiper-slide ol {
+            margin-left: 2rem;
+            margin-top: 12px;
+        }
+        .swiper-slide li { margin-bottom: 8px; }
+        
+        .highlight-box {
+            background: var(--amarillo-suave);
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin: 18px 0;
+            color: var(--gris-oscuro);
+        }
+
+        /* ---------- TARJETAS FLIP ---------- */
+        .suelo-infografia {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .suelo-card {
+            flex: 1 1 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-top: 6px solid var(--verde-claro);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transition: transform 0.3s;
+            cursor: pointer;
+            perspective: 1000px;
+            min-height: 250px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .suelo-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: relative;
+            width: 100%;
+            backface-visibility: hidden;
+        }
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotateY(180deg);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+        .suelo-card.flipped .card-front { display: none; }
+        .suelo-card.flipped .card-back { display: flex; }
+
+        @media (max-width: 700px) {
+            .swiper-slide { padding: 70px 20px 80px 20px; }
+            .suelo-card { flex: 1 1 100%; }
+        }
+
+        /* ---------- NAVEGACIÓN INFERIOR ---------- */
+        .nav-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 6000;
+            pointer-events: none;
+        }
+        .nav-bar > * { pointer-events: auto; }
+        .nav-btn {
+            background: #0A4A2A;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: background 0.2s;
+        }
+        .nav-btn:hover { background: #0D6B3E; }
+        .nav-btn.hidden-btn { opacity: 0; pointer-events: none; }
+        .nav-counter {
+            background: rgba(255,255,255,0.85);
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: var(--gris-oscuro);
+            backdrop-filter: blur(4px);
+        }
+
+        /* ---------- AUTOEVALUACIÓN ---------- */
+        .quiz-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin: 20px auto;
+        }
+        .quiz-question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        .quiz-question:last-child { border-bottom: none; }
+        .quiz-question p { font-weight: 600; font-size: 1.2rem; margin-bottom: 8px; }
+        .quiz-options label { display: block; margin: 6px 0; cursor: pointer; }
+        .quiz-result { margin-top: 25px; padding: 20px; background: var(--verde-muy-claro); border-radius: 12px; text-align: center; font-size: 1.3rem; font-weight: bold; display: none; }
+        .quiz-result.show { display: block; animation: fadeUp 0.5s ease; }
+        .quiz-btn { background: #0A4A2A; color: white; border: none; border-radius: 50px; padding: 12px 32px; font-size: 1.2rem; font-weight: 600; cursor: pointer; margin-top: 15px; }
+
+    </style>
+</head>
+<body>
+
+<div class="presentation-wrapper" id="app">
+    <div class="splash" id="splash">
+        <div class="splash-button-wrapper">
+            <img class="splash-button-bg" src="https://www.dropbox.com/scl/fi/dbeq7n5pkl96wtbvvacc2/boton.png?rlkey=phwhgfbwq03x05hlwz0rew9ur&st=l0zaim7a&dl=1" alt="Fondo del botón">
+            <button class="splash-btn" id="startBtn">
+                <img src="https://www.dropbox.com/scl/fi/dbeq7n5pkl96wtbvvacc2/boton.png?rlkey=phwhgfbwq03x05hlwz0rew9ur&st=l0zaim7a&dl=1" alt="Ver">
+                INGRESAR
+            </button>
+        </div>
+    </div>
+
+    <button class="close-btn" id="closeBtn">✕ Cerrar</button>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="swiper" id="swiperContainer">
+        <div class="swiper-wrapper">
+            
+            <div class="swiper-slide">
+                <h1>Tema 1</h1>
+                <h2>Conociendo los suelos y su conservación</h2>
+                <div class="highlight-box">
+                    Objetivo: Aprender a manejar el suelo como un ser vivo para producir cultivos sostenibles.
+                    <br><small>Duración estimada: 30 min</small>
+                </div>
+                <p class="text-center">Desliza para comenzar</p>
+            </div>
+
+            <div class="swiper-slide">
+                <h2>🌱 El suelo no es solo "tierra"</h2>
+                <p>Es un <strong>ser vivo</strong> complejo y fundamental para la vida. Para entenderlo, debemos saber que está compuesto por tres dimensiones integradas:</p>
+                <ul style="margin-top: 20px;">
+                    <li><strong>Parte Física:</strong> El cuerpo y estructura.</li>
+                    <li><strong>Parte Química:</strong> El alimento y energía.</li>
+                    <li><strong>Parte Biológica:</strong> La vida que transforma todo.</li>
+                </ul>
+                <div class="highlight-box" style="background: #D7CCC8; border-top: 5px solid #8D6E63;">
+                    "Un suelo sano es la base de un cultivo sostenible y rentable."
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <h2>🔍 Los 3 Componentes del Suelo</h2>
+                <p>Haz clic en cada tarjeta para conocer cómo conservarlos:</p>
+                
+                <div class="suelo-infografia">
+                    <div class="suelo-card" onclick="flipCard(this)">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <h3 style="font-size: 3rem;">🧱</h3>
+                                <h3>Componente Físico</h3>
+                                <p>Es la <strong>textura</strong> (arena, arcilla, limo) que le da estructura.</p>
+                                <p><small>👆 Toca para ver cómo conservarlo</small></p>
+                            </div>
+                            <div class="card-back">
+                                <h3>🛡️ Conservación Física</h3>
+                                <p>Evitar la <strong>erosión</strong> mediante:</p>
+                                <ul>
+                                    <li>Curvas a nivel</li>
+                                    <li>Barreras vivas (pasto vetiver)</li>
+                                    <li>Zanjas de infiltración</li>
+                                </ul>
+                                <p>Así evitamos que el agua se lleve el suelo.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="suelo-card" onclick="flipCard(this)">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <h3 style="font-size: 3rem;">🧪</h3>
+                                <h3>Componente Químico</h3>
+                                <p>Son los <strong>nutrientes</strong> (N, P, K) que las plantas necesitan.</p>
+                                <p><small>👆 Toca para ver cómo conservarlo</small></p>
+                            </div>
+                            <div class="card-back">
+                                <h3>⚖️ Conservación Química</h3>
+                                <p>Mantener el equilibrio nutricional:</p>
+                                <ul>
+                                    <li>No usar exceso de químicos</li>
+                                    <li>Enriquecer con materia orgánica</li>
+                                    <li>Análisis de suelo periódico</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="suelo-card" onclick="flipCard(this)">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <h3 style="font-size: 3rem;">🪱</h3>
+                                <h3>Componente Biológico</h3>
+                                <p>Organismos vivos: insectos, lombrices, hongos y bacterias.</p>
+                                <p><small>👆 Toca para ver cómo conservarlo</small></p>
+                            </div>
+                            <div class="card-back">
+                                <h3>🍃 Conservación Biológica</h3>
+                                <p>Ellos descomponen la materia y liberan nutrientes.</p>
+                                <p><strong>Cómo cuidarlos:</strong> Usar abonos orgánicos que les sirvan de alimento y evitar pesticidas fuertes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <h2>📝 Resumen de Prácticas Sostenibles</h2>
+                <div class="highlight-box">
+                    Para producir cultivos sostenibles, debemos pasar de "explotar la tierra" a "gestionar el suelo".
+                </div>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px; background: white; padding: 15px; border-radius: 10px;">
+                        <h3>✅ Lo que debemos hacer:</h3>
+                        <ul style="font-size: 1rem;">
+                            <li>Mantener el suelo cubierto con rastrojos.</li>
+                            <li>Aplicar compost y abonos verdes.</li>
+                            <li>Rotar los cultivos.</li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1; min-width: 250px; background: #FFEBEE; padding: 15px; border-radius: 10px;">
+                        <h3>❌ Lo que debemos evitar:</h3>
+                        <ul style="font-size: 1rem;">
+                            <li>Quemas agrícolas.</li>
+                            <li>Uso excesivo de fertilizantes sintéticos.</li>
+                            <li>Dejar el suelo desnudo en pendientes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <h2>📝 Autoevaluación de Suelos</h2>
+                <p>¿Qué tanto has aprendido sobre el suelo hoy?</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question" data-correct="b">
+                        <p>1. ¿Cuáles son las tres partes que componen el suelo vivo?</p>
+                        <div class="quiz-options">
+                            <label><input type="radio" name="q1" value="a"> a) Arena, piedras y agua</label>
+                            <label><input type="radio" name="q1" value="b"> b) Física, química y biológica</label>
+                            <label><input type="radio" name="q1" value="c"> c) Nutrientes, tierra y raíces</label>
+                        </div>
+                    </div>
+                    <div class="quiz-question" data-correct="a">
+                        <p>2. ¿Para qué sirven las barreras vivas como el pasto vetiver?</p>
+                        <div class="quiz-options">
+                            <label><input type="radio" name="q2" value="a"> a) Evitar que el agua se lleve el suelo (erosión)</label>
+                            <label><input type="radio" name="q2" value="b"> b) Darle sombra a los insectos</label>
+                            <label><input type="radio" name="q2" value="c"> c) Adornar la parcela</label>
+                        </div>
+                    </div>
+                    <div class="quiz-question" data-correct="c">
+                        <p>3. ¿Cómo alimentamos al componente biológico del suelo?</p>
+                        <div class="quiz-options">
+                            <label><input type="radio" name="q3" value="a"> a) Con riego constante</label>
+                            <label><input type="radio" name="q3" value="b"> b) Con insecticidas</label>
+                            <label><input type="radio" name="q3" value="c"> c) Usando abonos orgánicos</label>
+                        </div>
+                    </div>
+                    <button class="quiz-btn" id="quizBtn">✅ Ver calificación</button>
+                    <div class="quiz-result" id="quizResult">
+                        <span id="quizScore"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar" id="navBar">
+        <button class="nav-btn" id="prevBtn">◀ Anterior</button>
+        <span class="nav-counter" id="slideCounter">1 / 5</span>
+        <button class="nav-btn" id="nextBtn">Siguiente ▶</button>
+    </div>
+</div>
+
+<script>
+    (function(){
+        "use strict";
+
+        const splash = document.getElementById('splash');
+        const startBtn = document.getElementById('startBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const progressFill = document.getElementById('progressFill');
+        const slideCounter = document.getElementById('slideCounter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // MÚSICA (Opcional, si tienes el link)
+        const bgm = new Audio('https://www.dropbox.com/scl/fi/49a75ks3r82xxa0r6oqj1/musica-fondo.mp3?rlkey=1ag90k1gtwxhm6svit2qr6g75&st=chpxf7n1&dl=1');
+        bgm.loop = true;
+        bgm.volume = 0.2;
+
+        let swiper = null;
+
+        function updateProgress(activeIndex, total) {
+            const pct = ((activeIndex + 1) / total) * 100;
+            progressFill.style.width = pct + '%';
+            slideCounter.textContent = (activeIndex + 1) + ' / ' + total;
+            
+            if (activeIndex === 0) prevBtn.classList.add('hidden-btn');
+            else prevBtn.classList.remove('hidden-btn');
+            
+            if (activeIndex === total - 1) nextBtn.classList.add('hidden-btn');
+            else nextBtn.classList.remove('hidden-btn');
+        }
+
+        function initSwiper() {
+            swiper = new Swiper('.swiper', {
+                direction: 'horizontal',
+                loop: false,
+                on: {
+                    slideChange: function() {
+                        updateProgress(this.activeIndex, this.slides.length);
+                    },
+                    init: function() {
+                        updateProgress(0, this.slides.length);
+                    }
+                }
+            });
+            prevBtn.onclick = () => swiper.slidePrev();
+            nextBtn.onclick = () => swiper.slideNext();
+        }
+
+        window.flipCard = function(card) {
+            card.classList.toggle('flipped');
+        };
+
+        function setupQuiz() {
+            const quizBtn = document.getElementById('quizBtn');
+            const quizResult = document.getElementById('quizResult');
+            const quizScore = document.getElementById('quizScore');
+
+            quizBtn.addEventListener('click', function() {
+                let correct = 0;
+                let total = 0;
+                const questions = document.querySelectorAll('.quiz-question');
+
+                questions.forEach(q => {
+                    const correctAnswer = q.dataset.correct;
+                    const selected = q.querySelector('input[type="radio"]:checked');
+                    if (selected) {
+                        total++;
+                        if (selected.value === correctAnswer) correct++;
+                    }
+                });
+
+                if (total < 3) {
+                    alert('Por favor responde todas las preguntas.');
+                    return;
+                }
+
+                const percentage = Math.round((correct / total) * 100);
+                quizResult.classList.add('show');
+                quizScore.textContent = (percentage >= 70) ? 
+                    `¡Excelente! 🎉 Nota: ${percentage}% (${correct}/3)` : 
+                    `Sigue repasando. Nota: ${percentage}% (${correct}/3)`;
+            });
+        }
+
+        function startPresentation() {
+            bgm.play().catch(() => {});
+            splash.classList.add('hidden');
+            closeBtn.style.display = 'block';
+            if (!swiper) {
+                initSwiper();
+                setupQuiz();
+            }
+        }
+
+        function closePresentation() {
+            bgm.pause();
+            bgm.currentTime = 0;
+            splash.classList.remove('hidden');
+            closeBtn.style.display = 'none';
+        }
+
+        startBtn.addEventListener('click', startPresentation);
+        closeBtn.addEventListener('click', closePresentation);
+
+    })();
+</script>
+</body>
+</html>
