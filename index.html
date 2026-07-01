@@ -10,10 +10,9 @@
         /* ---------- RESET + VARIABLES ---------- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --verde-principal: #2E7D32;
-            --verde-claro: #66BB6A;
-            --verde-muy-claro: #E8F5E9;
-            --marron-tierra: #8D6E63;
+            --morado-principal: #9B59B6;
+            --morado-oscuro: #6c3483;
+            --morado-claro: #F4ECF7;
             --beige: #F5F5DC;
             --blanco: #FFFFFF;
             --gris-oscuro: #424242;
@@ -183,24 +182,24 @@
             scroll-behavior: smooth;
         }
         .swiper-slide:nth-child(odd) { background: var(--beige); }
-        .swiper-slide:nth-child(even) { background: var(--verde-muy-claro); }
+        .swiper-slide:nth-child(even) { background: var(--morado-claro); }
 
         /* tipografía */
         .swiper-slide h1 {
-            color: #0A4A2A;
+            color: var(--morado-oscuro);
             font-size: 2.6rem;
-            border-bottom: 4px solid var(--amarillo-suave);
+            border-bottom: 4px solid var(--morado-principal);
             display: inline-block;
             padding-bottom: 8px;
             margin-bottom: 20px;
         }
         .swiper-slide h2 {
-            color: var(--marron-tierra);
+            color: var(--morado-oscuro);
             font-size: 2rem;
             margin: 15px 0 10px;
         }
         .swiper-slide h3 {
-            color: #0A4A2A;
+            color: var(--morado-oscuro);
             font-size: 1.5rem;
             margin-top: 10px;
         }
@@ -216,12 +215,13 @@
         .swiper-slide li { margin-bottom: 8px; }
         
         .highlight-box {
-            background: var(--amarillo-suave);
+            background: var(--morado-claro);
             padding: 20px 24px;
             border-radius: 12px;
             font-weight: 600;
             margin: 18px 0;
             color: var(--gris-oscuro);
+            border-left: 5px solid var(--morado-principal);
         }
 
         /* ---------- TARJETAS FLIP ---------- */
@@ -236,7 +236,7 @@
             background: white;
             padding: 20px;
             border-radius: 12px;
-            border-top: 6px solid var(--verde-claro);
+            border-top: 6px solid var(--morado-principal);
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
             transition: transform 0.3s;
             cursor: pointer;
@@ -270,6 +270,7 @@
         }
         .suelo-card.flipped .card-front { display: none; }
         .suelo-card.flipped .card-back { display: flex; }
+        .suelo-card h3 { color: var(--morado-oscuro); }
 
         @media (max-width: 700px) {
             .swiper-slide { padding: 70px 20px 80px 20px; }
@@ -291,7 +292,7 @@
         }
         .nav-bar > * { pointer-events: auto; }
         .nav-btn {
-            background: #0A4A2A;
+            background: var(--morado-principal);
             color: white;
             border: none;
             border-radius: 50px;
@@ -302,7 +303,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             transition: background 0.2s;
         }
-        .nav-btn:hover { background: #0D6B3E; }
+        .nav-btn:hover { background: var(--morado-oscuro); }
         .nav-btn.hidden-btn { opacity: 0; pointer-events: none; }
         .nav-counter {
             background: rgba(255,255,255,0.85);
@@ -326,9 +327,14 @@
         .quiz-question:last-child { border-bottom: none; }
         .quiz-question p { font-weight: 600; font-size: 1.2rem; margin-bottom: 8px; }
         .quiz-options label { display: block; margin: 6px 0; cursor: pointer; }
-        .quiz-result { margin-top: 25px; padding: 20px; background: var(--verde-muy-claro); border-radius: 12px; text-align: center; font-size: 1.3rem; font-weight: bold; display: none; }
+        .quiz-options input[type="radio"] { margin-right: 10px; }
+        .quiz-result { margin-top: 25px; padding: 20px; background: var(--morado-claro); border-radius: 12px; text-align: center; font-size: 1.3rem; font-weight: bold; display: none; }
         .quiz-result.show { display: block; animation: fadeUp 0.5s ease; }
-        .quiz-btn { background: #0A4A2A; color: white; border: none; border-radius: 50px; padding: 12px 32px; font-size: 1.2rem; font-weight: 600; cursor: pointer; margin-top: 15px; }
+        .quiz-btn { background: var(--morado-principal); color: white; border: none; border-radius: 50px; padding: 12px 32px; font-size: 1.2rem; font-weight: 600; cursor: pointer; margin-top: 15px; }
+        .quiz-btn:hover { background: var(--morado-oscuro); }
+
+        .text-center { text-align: center; }
+        .text-muted { color: #777; font-size: 0.9rem; }
 
     </style>
 </head>
@@ -359,9 +365,9 @@
                 <h2>Conociendo los suelos y su conservación</h2>
                 <div class="highlight-box">
                     Objetivo: Aprender a manejar el suelo como un ser vivo para producir cultivos sostenibles.
-                    <br><small>Duración estimada: 30 min</small>
+                    <br><small class="text-muted">Duración estimada: 30 min</small>
                 </div>
-                <p class="text-center">Desliza para comenzar</p>
+                <p class="text-center" style="margin-top: 30px;">⬇️ Desliza para comenzar ⬇️</p>
             </div>
 
             <div class="swiper-slide">
@@ -372,7 +378,7 @@
                     <li><strong>Parte Química:</strong> El alimento y energía.</li>
                     <li><strong>Parte Biológica:</strong> La vida que transforma todo.</li>
                 </ul>
-                <div class="highlight-box" style="background: #D7CCC8; border-top: 5px solid #8D6E63;">
+                <div class="highlight-box" style="background: var(--morado-claro); border-top: 5px solid var(--morado-principal);">
                     "Un suelo sano es la base de un cultivo sostenible y rentable."
                 </div>
             </div>
@@ -388,7 +394,7 @@
                                 <h3 style="font-size: 3rem;">🧱</h3>
                                 <h3>Componente Físico</h3>
                                 <p>Es la <strong>textura</strong> (arena, arcilla, limo) que le da estructura.</p>
-                                <p><small>👆 Toca para ver cómo conservarlo</small></p>
+                                <p style="color: var(--morado-principal); font-size: 0.9rem;">👆 Toca para ver cómo conservarlo</p>
                             </div>
                             <div class="card-back">
                                 <h3>🛡️ Conservación Física</h3>
@@ -398,7 +404,7 @@
                                     <li>Barreras vivas (pasto vetiver)</li>
                                     <li>Zanjas de infiltración</li>
                                 </ul>
-                                <p>Así evitamos que el agua se lleve el suelo.</p>
+                                <p style="margin-top: 10px;">Así evitamos que el agua se lleve el suelo.</p>
                             </div>
                         </div>
                     </div>
@@ -409,7 +415,7 @@
                                 <h3 style="font-size: 3rem;">🧪</h3>
                                 <h3>Componente Químico</h3>
                                 <p>Son los <strong>nutrientes</strong> (N, P, K) que las plantas necesitan.</p>
-                                <p><small>👆 Toca para ver cómo conservarlo</small></p>
+                                <p style="color: var(--morado-principal); font-size: 0.9rem;">👆 Toca para ver cómo conservarlo</p>
                             </div>
                             <div class="card-back">
                                 <h3>⚖️ Conservación Química</h3>
@@ -429,7 +435,7 @@
                                 <h3 style="font-size: 3rem;">🪱</h3>
                                 <h3>Componente Biológico</h3>
                                 <p>Organismos vivos: insectos, lombrices, hongos y bacterias.</p>
-                                <p><small>👆 Toca para ver cómo conservarlo</small></p>
+                                <p style="color: var(--morado-principal); font-size: 0.9rem;">👆 Toca para ver cómo conservarlo</p>
                             </div>
                             <div class="card-back">
                                 <h3>🍃 Conservación Biológica</h3>
@@ -447,16 +453,16 @@
                     Para producir cultivos sostenibles, debemos pasar de "explotar la tierra" a "gestionar el suelo".
                 </div>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px; background: white; padding: 15px; border-radius: 10px;">
-                        <h3>✅ Lo que debemos hacer:</h3>
+                    <div style="flex: 1; min-width: 250px; background: white; padding: 15px; border-radius: 10px; border-top: 5px solid var(--morado-principal);">
+                        <h3 style="color: var(--morado-oscuro);">✅ Lo que debemos hacer:</h3>
                         <ul style="font-size: 1rem;">
                             <li>Mantener el suelo cubierto con rastrojos.</li>
                             <li>Aplicar compost y abonos verdes.</li>
                             <li>Rotar los cultivos.</li>
                         </ul>
                     </div>
-                    <div style="flex: 1; min-width: 250px; background: #FFEBEE; padding: 15px; border-radius: 10px;">
-                        <h3>❌ Lo que debemos evitar:</h3>
+                    <div style="flex: 1; min-width: 250px; background: #F9F9F9; padding: 15px; border-radius: 10px; border-top: 5px solid #e74c3c;">
+                        <h3 style="color: #c0392b;">❌ Lo que debemos evitar:</h3>
                         <ul style="font-size: 1rem;">
                             <li>Quemas agrícolas.</li>
                             <li>Uso excesivo de fertilizantes sintéticos.</li>
